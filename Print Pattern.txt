@@ -1,0 +1,39 @@
+Print Pattern
+
+Print a sequence of numbers starting with nn, without using a loop. Replace nn with n−5n - 5n−5 until n≤0n \leq 0n≤0. Then, replace n with n+5n + 5n+5 until nn regains its initial value. Complete the function pattern(n) which takes n as input and returns a list containing the pattern.
+
+Examples
+
+Input: n = 16
+Output: 16 11 6 1 -4 1 6 11 16
+Explanation: The value decreases until it is greater than 0. After that it increases and stops when it becomes 16 again.
+Input: n = 10
+Output: 10 5 0 5 10
+Explanation: It follows the same logic as per the above example.
+
+class Solution{
+    public List<Integer> pattern(int N){
+        List<Integer> result = new ArrayList<>();
+        int flag = 0;
+        generate(N,N,result,flag);
+        return result;
+    }   
+    void generate(int N, int initial, List<Integer> result,int flag){
+        
+        result.add(N);
+        // code here
+        if(N<=0) flag = 1;
+        if(N==initial && flag==1) return;
+            
+        if(flag==1){
+            
+            generate(N+5,initial,result,1);
+        }
+        else if(flag==0){
+            
+            generate(N-5,initial,result,0);
+        }
+    }
+        
+    
+}
