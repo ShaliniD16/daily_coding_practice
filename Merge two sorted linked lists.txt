@@ -1,0 +1,55 @@
+Merge two sorted linked lists
+
+Given two sorted linked lists consisting of nodes respectively. The task is to merge both lists and return the head of the merged list.
+
+Examples:
+
+Input: LinkedList1: 5->10->15->40, ListedList2: 2->3->20
+Output: 2->3->5->10->15->20->40
+Explanation:
+
+Input: LinkedList1: 1->1, LinkedList2: 2->4
+Output: 1->1->2->4
+Explanation:
+
+Expected Time Complexity: O(n+m)
+Expected Auxilliary Space: O(1)
+
+Constraints:
+1 <= no. of nodes<= 105
+0 <= node->data <= 105
+
+class Solution {
+    // Function to merge two sorted linked list.
+    Node sortedMerge(Node head1, Node head2) {
+        // This is a "method-only" submission.
+        // You only need to complete this method
+        Node res = new Node(0);
+        Node k = res;
+        Node i = head1, j = head2;
+        while(i!=null && j!=null){
+            if(i.data<=j.data){
+                k.next = new Node(i.data);
+
+                i = i.next;
+            }
+            else{
+                k.next = new Node(j.data);
+                j = j.next;
+            }
+            k = k.next;
+        }
+        while(i!=null){
+            k.next = new Node(i.data);
+
+            i = i.next;
+            k = k.next;
+        }
+        while(j!=null){
+            k.next = new Node(j.data);
+            j = j.next;
+            k = k.next;
+        }
+        return res.next;
+    }
+}
