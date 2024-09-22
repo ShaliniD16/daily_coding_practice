@@ -1,0 +1,68 @@
+Merge Sort for Linked List
+
+Given a pointer/reference to the head of the linked list, the task is to sort the given linked list using Merge Sort.
+Note: If the length of the linked list is odd, then the extra node should go into the first list while splitting.
+
+Examples:
+
+Input: LinkedList: 3->5->2->4->1
+Output: 1->2->3->4->5
+Explanation: After sorting the given linked list, the resultant matrix will be 1->2->3->4->5.
+
+Input: LinkedList: 9->15->0
+Output: 0->9->15
+Explanation: After sorting the given linked list , resultant will be 0->9->15.
+
+Expected Time Complexity: O(n*log(n))
+Expected Auxiliary Space: O(n)
+
+Constraints:
+1 <= number of nodes <= 105
+0 <= node->data <= 106
+
+class Solution {
+    // Function to sort the given linked list using Merge Sort.
+    static Node mergeSort(Node head) {
+        // add your code here
+        if(head==null || head.next==null){
+            return head;
+        }
+        Node slow = head,fast = head;
+        while(fast.next!=null && fast.next.next!=null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        Node mid = slow;
+        Node midnext = mid.next;
+        mid.next = null;
+        Node left = mergeSort(head);
+        Node right = mergeSort(midnext);
+        return merge(left,right);
+    }
+    static Node merge(Node left, Node right){
+        Node res = new Node(0);
+        Node k = res;
+        while(left!=null && right!=null){
+            if(left.data<=right.data){
+                k.next = left;
+                left = left.next;
+            }
+            else{
+                k.next = right;
+                right= right.next;
+            }
+            k = k.next;
+        }
+        while(left!=null){
+            k.next = left;
+            left = left.next;
+            k = k.next;
+        }
+        while(right!=null){
+            k.next = right;
+            right= right.next;
+            k = k.next;
+        }
+        return res.next;
+    }
+}
