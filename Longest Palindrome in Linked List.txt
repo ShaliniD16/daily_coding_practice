@@ -1,0 +1,56 @@
+Longest Palindrome in Linked List
+
+
+Given a linked list, return an integer denoting the length of the longest palindrome list that exists in the given linked list.
+
+Examples:
+
+Input: Linked List: 2->3->7->3->2->12->24
+Output: 5
+Explanation: 2 -> 3 -> 7 -> 3 -> 2 is the linked list whose nodes leads to a palindrome.
+Input: Linked List: 12->4->4->3->14
+
+Output: 2
+Explanation: 4 -> 4 is the linked list whose nodes leads to a palindrome with length 2.
+Expected Time Complexity: O(n2)
+Expected Space Complexity: O(1)
+
+Constraints:
+1 <= number of nodes <= 104
+1 <= data of nodes <= 105
+
+class Solution {
+    public static int maxPalindrome(Node head) {
+        // add code here.
+        Node curr = head;
+        int maxlength = 0;
+        while(curr!=null){
+            maxlength = Math.max(maxlength,expandAroundCenter(curr,curr,head));
+            if(curr.next!=null){
+                maxlength = Math.max(maxlength,expandAroundCenter(curr,curr.next,head));
+                
+            }
+            curr = curr.next;
+            
+        }
+        return maxlength;
+    }
+    static int expandAroundCenter(Node left, Node right,Node head){
+        int length = 0;
+        while(left!=null && right!=null && left.data==right.data){
+            length += (left == right) ? 1 : 2;
+            left = getPrevious(left,head);
+            right = right.next;
+            
+        }
+        
+        return length;
+    }
+    static Node getPrevious(Node node, Node head){
+        Node t = head;
+        while(t!=null && t.next!=node){
+            t=t.next;
+        }
+        return t;
+    }
+}
