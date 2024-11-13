@@ -1,0 +1,63 @@
+Parenthesis Checker
+
+You are given a string s representing an expression containing various types of brackets: {}, (), and []. Your task is to determine whether the brackets in the expression are balanced. A balanced expression is one where every opening bracket has a corresponding closing bracket in the correct order.
+
+Examples :
+
+Input: s = "{([])}"
+Output: true
+Explanation: 
+- In this expression, every opening bracket has a corresponding closing bracket.
+- The first bracket { is closed by }, the second opening bracket ( is closed by ), and the third opening bracket [ is closed by ].
+- As all brackets are properly paired and closed in the correct order, the expression is considered balanced.
+Input: s = "()"
+Output: true
+Explanation: 
+- This expression contains only one type of bracket, the parentheses ( and ).
+- The opening bracket ( is matched with its corresponding closing bracket ).
+- Since they form a complete pair, the expression is balanced.
+Input: s = "([]"
+Output: false
+Explanation: 
+- This expression contains only one type of bracket, the parentheses ( and ).
+- The opening bracket ( is matched with its corresponding closing bracket ).
+- Since they form a complete pair, the expression is balanced.
+Constraints:
+1 ≤ s.size() ≤ 106
+s[i] ∈ {'{', '}', '(', ')', '[', ']'}
+
+class Solution {
+    // Function to check if brackets are balanced or not.
+    static boolean isParenthesisBalanced(String s) {
+        // code here
+        char[] arr = new char[100];
+        int top = -1;
+        for(int i = 0;i<s.length();i++){
+            if(s.charAt(i)=='{' || s.charAt(i)=='(' || s.charAt(i) == '['){
+                top++;
+                arr[top]=s.charAt(i);
+            }
+            else{
+                if(top==-1) return false;
+                if(s.charAt(i)=='}'){
+                    char x = arr[top];
+                    if(x!='{') return false;
+                    
+                }
+                else if(s.charAt(i)==']'){
+                    char x = arr[top];
+                    if(x!='[') return false;
+                    
+                }
+                else if(s.charAt(i)==')'){
+                    char x = arr[top];
+                    if(x!='(') return false;
+                    
+                }
+                top--;
+            }
+        }
+        if(top!=-1) return false;
+        return true;
+    }
+}
