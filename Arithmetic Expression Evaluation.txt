@@ -1,0 +1,137 @@
+Arithmetic Expression Evaluation
+
+Problem statement
+You are given a string ‘expression’ consists of characters ‘+’, ‘-’, ‘*’, ‘/’, ‘(‘, ‘)’ and ‘0’ to ‘9’, that represents an Arithmetic Expression in Infix Notation. Your task is to evaluate this Arithmetic Expression.
+
+In Infix Notation, operators are written in-between their operands.
+
+Note :
+1. We consider the ‘/’ operator as the floor division.
+
+2. Operators ‘*’ and ‘/’ expression has higher precedence over operators‘+’ and ‘-’ 
+
+3. String expression always starts with ‘(‘ and ends with ‘)’.
+
+4. It is guaranteed that ‘expression’ represents’ a valid expression in Infix notation.
+
+5. It is guaranteed that there will be no case that requires division by 0.
+
+6. No characters other than those mentioned above are present in the string. 
+
+7. It is guaranteed that the operands and final result will fit in a 32-bit integer.
+For example :
+Consider string ‘expression’ = ‘((2+3)*(5/2))’. 
+Then it’s value after evaluation will be ((5)*(2)) = 10. 
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints :
+1 <= T <= 50
+3 <= |expression| <= 10^4
+
+Time limit: 1 sec
+Sample Input 1 :
+2
+(2)
+((2+3)*(5/2))
+Sample Output 1 :
+2
+10
+Explanation For Sample Input 1 :
+Test case 1 :
+The value of the expression “(2)” will be 2 after evaluation.
+
+Test case 2 :
+See the problem statement for an explanation.
+Sample Input 2 :
+2
+(121+(101+0))
+(3*(5+2)*(10-7))
+Sample Output 2 :
+222
+63
+
+
+
+
+import java.util.* ;
+import java.io.*; 
+public class Solution
+{
+    public static int evaluateArithmeticExpression(String expression) 
+    {
+        // Write your code here
+        StringBuilder res = new StringBuilder();
+        Stack<Character> s = new Stack<>();
+        for(int i = 0;i<expression.length();i++){
+            char c = expression.charAt(i);
+            if(Character.isDigit(c)){
+                
+                while (i < expression.length() && Character.isDigit(expression.charAt(i))) {
+                    res.append(expression.charAt(i));
+                    i++;
+                }
+                res.append('#');
+                i--;
+            }
+            
+            else if(c==')'){
+                while(s.peek()!='('){
+                    res.append(s.pop());
+                }
+                s.pop();
+            }
+            else if(c=='('){
+                s.push(c);
+            }
+            else{
+                while(!s.isEmpty()&&(prec(c)<=prec(s.peek()))){
+                    res.append(s.pop());
+                }
+                s.push(c);
+            }
+            
+        }
+        while(!s.isEmpty()){
+            res.append(s.pop());
+        }
+        String post = res.toString();
+        Stack<Integer> st = new Stack<>();
+        for(int i = 0;i<post.length();i++){
+            char c = post.charAt(i);
+            if(Character.isDigit(c)){
+                int num = 0;
+                while(i<post.length()&&post.charAt(i)!='#'){
+                    num = num*10 + (post.charAt(i)-'0');
+                    i++;
+                }
+                st.push(num);
+            }
+            else{
+                int b = st.pop();
+                int a = st.pop();
+                if(c=='+'){
+                    st.push(a+b);
+                }
+                else if(c=='-'){
+                    st.push(a-b);
+                }
+                else if(c=='*'){
+                    st.push(a*b);
+                }
+                else{
+                    st.push((int)a/b);
+                }
+            }
+        }
+        return st.pop();
+
+    }
+    static int prec(Character c){
+        if(c=='/' || c=='*'){
+            return 3;
+        }
+        else if(c=='+' || c=='-'){
+            return 2;
+        }
+        return 0;
+    }
+}
