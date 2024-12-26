@@ -1,0 +1,57 @@
+Delete nodes having greater value on right
+
+
+Given a singly linked list, remove all the nodes with any node on their right whose value is greater and return the head of the modified linked list.  (Not just the immediate Right, but the entire List on the Right)
+
+Examples:
+
+Input:
+LinkedList = 12->15->10->11->5->6->2->3
+Output: 15->11->6->3
+
+Explanation: Since, 12, 10, 5 and 2 are the elements which have greater elements on the following nodes. So, after deleting them, the linked list would like be 15, 11, 6, 3.
+Input:
+LinkedList = 10->20->30->40->50->60
+Output: 60
+
+Explanation: All the nodes except the last node has a greater value node on its right, so all the nodes except the last node must be removed.
+Expected Time Complexity: O(n)
+Expected Space Complexity: O(1)
+
+Constraints:
+1 ≤ size of linked list ≤ 106
+1 ≤ element of linked list ≤ 106
+
+class Solution {
+    Node compute(Node head) {
+        // your code here
+        Node reversed = reverse(head);
+        Node max = reversed;
+        Node t = reversed;
+        Node prv = null;
+        while(t!=null){
+            if(t.data<max.data){
+               prv.next = t.next;
+               t = prv.next;
+            }
+            else{
+               max = t;
+               prv = t;
+               t = t.next; 
+            }
+            
+        }
+        head = reverse(reversed);
+        return head;
+    }
+    static Node reverse(Node head){
+        Node curr = head,prv = null,next = null;
+        while(curr!=null){
+            next = curr.next;
+            curr.next = prv;
+            prv = curr;
+            curr = next;
+        }
+        return prv;
+    }
+}

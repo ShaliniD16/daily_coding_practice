@@ -1,0 +1,121 @@
+LRU Cache
+
+
+Design a data structure that works like a LRU Cache. Here cap denotes the capacity of the cache and Q denotes the number of queries. Query can be of two types:
+
+SET x y: sets the value of the key x with value y
+GET x: gets the key of x if present else returns -1.
+The LRUCache class has two methods get() and set() which are defined as follows.
+
+get(key): returns the value of the key if it already exists in the cache otherwise returns -1.
+set(key, value): if the key is already present, update its value. If not present, add the key-value pair to the cache. If the cache reaches its capacity it should remove the least recently used item before inserting the new item.
+In the constructor of the class the capacity of the cache should be initialized.
+Examples:
+
+Input: cap = 2, Q = 2, Queries = SET 1 2, GET 1
+Output: 2
+Explanation: Cache Size = 2
+SET 1 2 will insert the key-value pair (1,2) in the cache,
+GET 1 will print the value corresponding to Key 1, ie 2.
+Input: cap = 2,Q = 8, Queries = SET 1 2, SET 2 3, SET 1 5, SET 4 5, SET 6 7, GET 4, SET 1 2, GET 3
+Output: 5 -1
+Explanation: Cache Size = 2
+SET 1 2 will insert the pair (1,2) in the cache.
+SET 2 3 will insert the pair (2,3) in the cache: 1->2, 2->3(the most recently used one is kept at the rightmost position) 
+SET 1 5 will replace the value of 1 from 2 to 5 : 2 -> 3, 1 -> 5
+SET 4 5 : 1 -> 5, 4 -> 5 (Cache size is 2, hence we delete the least recently used key-value pair)
+SET 6 7 : 4 -> 5, 6 -> 7 
+GET 4 : Prints 5 (The cache now looks like 6 -> 7, 4->5)
+SET 1 2 : 4 -> 5, 1 -> 2  (Cache size is 2, hence we delete the least recently used key-value pair)
+GET 3 : No key value pair having key = 3. Hence, -1 is printed.
+Expected Time Complexity: O(1) for both get() and set().
+Expected Auxiliary Space: O(1) for both get() and set(). 
+(Although, you may use extra space for cache storage and implementation purposes).
+
+Constraints:
+1 <= cap <= 10^3
+1 <= Q <= 10^5
+1 <= x, y <= 10^4
+
+
+class LRUCache {
+    // Constructor for initializing the cache capacity with the given value.
+    int cap;
+    Map<Integer, Node> cache;
+    DoublyLinkedList dll;
+    static class Node{
+        int key,value;
+        Node next,prev;
+        Node(int key, int value){
+            this.key = key;
+            this.value = value;
+        }
+    }
+    static class DoublyLinkedList{
+        Node head,tail;
+        DoublyLinkedList(){
+            head = new Node(0,0);
+            tail = new Node(0,0);
+            head.next = tail;
+            tail.prev = head;
+        }
+        void addNode(Node node){
+            Node prevtail = tail.prev;
+            node.next = tail;
+            node.prev = prevtail;
+            prevtail.next = node;
+            tail.prev = node;
+        }
+        void removeNode(Node node){
+            Node prevnode = node.prev;
+            prevnode.next = node.next;
+            Node nextnode = node.next;
+            nextnode.prev = prevnode;
+        }
+        Node removeLRU(){
+            Node lru = head.next;
+            removeNode(lru);
+            return lru;
+        }
+    }
+    LRUCache(int cap) {
+        // code here
+        this.cap = cap;
+        this.cache = new HashMap<>();
+        this.dll = new DoublyLinkedList();
+        
+        
+    }
+
+    // Function to return value corresponding to the key.
+    public int get(int key) {
+        // your code here
+        if(cache.containsKey(key)){
+            Node n = cache.get(key);
+            dll.removeNode(n);
+            dll.addNode(n);
+            return n.value;
+        }
+        return -1;
+    }
+
+    // Function for storing key-value pair.
+    public void set(int key, int value) {
+        // your code here
+        if(cache.containsKey(key)){
+            Node n = cache.get(key);
+            n.value = value;
+            dll.removeNode(n);
+            dll.addNode(n);
+        }
+        else{
+            if(cache.size()==cap){
+                Node lru = dll.removeLRU();
+                cache.remove(lru.key);
+            }
+            Node newNode = new Node(key,value);
+            dll.addNode(newNode);
+            cache.put(key,newNode);
+        }
+    }
+}

@@ -1,0 +1,105 @@
+Subtraction in Linked List
+
+
+You are given two linked lists representing two large positive numbers. The linked lists represent these two numbers, subtract the smaller number from the larger one and return the head of the linked list representing the result. Please take a look at the examples to get a better understanding of the task.
+
+Linked list does not contain leading zeros, except for the number zero itself.
+
+ 
+
+Examples:
+
+Input: LinkedList1: 1->0->0, LinkedList2: 1->2
+Output:  LinkedList: 8->8
+Explanation: First linked list represents 100 and the second one represents 12. 12 subtracted from 100 gives us 88 as the result. It is represented as 8->8 in the linked list.
+
+Input: LinkedList1: 6->3, LinkedList2: 7->1->0
+Output: LinkedList: 6->4->7
+Explanation: First linked list represents 63 and the second one represents 710. 63 subtracted from 710 gives us 647 as the result. It is represented as 6->4->7 in the linked list.
+
+Expected Time Complexity:  O(n+m)
+Expected Space Complexity: O(n+m)
+
+Constraints:
+1 <= size of both linked lists <= 106
+0 <= node->data <= 9
+
+class Solution {
+    static Node subLinkedList(Node head1, Node head2) {
+        
+        // code here
+        Node larger = bigger(head1,head2);
+        Node smaller;
+        if(larger==head1) smaller = head2;
+        else smaller = head1;
+        
+        larger = reverse(larger);
+        smaller = reverse(smaller);
+        Node curr1 = larger, curr2 = smaller;
+        
+        Node res = new Node(0);
+        Node t = res;
+        int diff;
+        int borr = 0;
+        while(curr1!=null){
+            if(borr!=0){
+                curr1.data-=borr;
+                borr = 0;
+            }
+            if(curr2==null) curr2 = new Node(0);
+            if(curr1.data<curr2.data){
+                curr1.data = curr1.data+10;
+                borr += 1;
+            }
+            diff = curr1.data - curr2.data;
+            t.next = new Node(diff);
+            t= t.next;
+            curr1 = curr1.next;
+            curr2 = curr2.next;
+        }
+        res = reverse(res.next);
+        while(res!=null && res.data==0){
+            res = res.next;
+            
+        }
+        res = res==null?new Node(0):res;
+        return res;
+        
+    }
+    static Node reverse(Node head){
+        Node curr = head, prv = null, next = null;
+        while(curr!=null){
+            next = curr.next;
+            curr.next = prv;
+            prv = curr;
+            curr = next;
+        }
+        return prv;
+    }
+    static Node bigger(Node head1, Node head2){
+        if(getLength(head1)>getLength(head2)){
+            return head1;
+        }
+        else if(getLength(head1)<getLength(head2)){
+            return head2;
+        }
+        else{
+            Node t1 = head1, t2 = head2;
+            while(t1!=null){
+                if(t1.data<t2.data) return head2;
+                else if(t1.data>t2.data) return head1;
+                t1 = t1.next;
+                t2 = t2.next;
+            }
+            return head1;
+        }
+    }
+    static int getLength(Node head){
+        int count = 0;
+        while(head!=null){
+            count++;
+            head = head.next;
+        }
+        return count;
+    }
+}
