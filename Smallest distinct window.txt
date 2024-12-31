@@ -1,0 +1,47 @@
+Smallest distinct window
+
+
+Given a string s, your task is to find the smallest window length that contains all the characters of the given string at least one time.
+
+Example:
+
+Input: s = "AABBBCBBAC"
+Output: 3
+Explanation: Sub-string -> "BAC"
+Input: s = "aaab"
+Output: 2
+Explanation: Sub-string -> "ab"
+Input: s = "GEEKSGEEKSFOR"
+Output: 8
+Explanation: Sub-string -> "GEEKSFOR"
+Constraints:
+1 ≤ s.size() ≤ 105
+String may contain both types of English Alphabet.
+
+class Solution {
+    public int findSubString(String s) {
+        // Your code goes here
+        HashSet<Character> hs = new HashSet<>();
+        HashMap<Character,Integer> hm = new HashMap<>();
+        int minlength = s.length();
+        int l = 0;
+        for(char ch:s.toCharArray()){
+            hs.add(ch);
+        }
+        int count = 0;
+        int unique = hs.size();
+        for(int i = 0;i<s.length();i++){
+            char endChar = s.charAt(i);
+            hm.put(s.charAt(i),hm.getOrDefault(s.charAt(i),0)+1);
+            if(hm.get(endChar)==1) count++;
+            while(count==unique){
+                minlength = Math.min(minlength,i-l+1);
+                char startChar = s.charAt(l);
+                hm.put(startChar,hm.get(startChar)-1);
+                if(hm.get(startChar)==0) count--;
+                l++;
+            }
+        }
+        return minlength;
+    }
+}
