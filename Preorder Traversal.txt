@@ -1,0 +1,55 @@
+Preorder Traversal
+
+
+Given a binary tree, find its preorder traversal.
+
+Examples:
+
+Input:
+        1      
+      /          
+    4    
+  /    \   
+4       2
+Output: [1, 4, 4, 2]
+Input:
+       6
+     /   \
+    3     2
+     \   / 
+      1 2
+Output: [6, 3, 1, 2, 2] 
+Input:
+         8
+       / \
+      3   10
+     / \    \
+    1   6   14
+       / \   /
+      4   7 13
+Output: [8, 3, 1, 6, 4, 7, 10, 14, 13]
+Constraints:
+1 <= number of nodes <= 105
+0 <= node->data <= 106
+
+
+
+//Back-end complete function Template for Java
+class Solution {
+    // Function to return a list containing the preorder traversal of the tree.
+    static ArrayList<Integer> preorder(Node root) {
+        // write code here
+        ArrayList<Integer> li = new ArrayList<>();
+        preorderHelper(root,li);
+        return li;
+        
+    }
+    static void preorderHelper(Node root, ArrayList<Integer> li){
+        if(root==null){
+            return;
+        }
+        li.add(root.data);
+        preorderHelper(root.left,li);
+        preorderHelper(root.right,li);
+    }
+}
