@@ -1,0 +1,77 @@
+Bottom View of Binary Tree
+
+Given a binary tree, return an array where elements represent the bottom view of the binary tree from left to right.
+
+Note: If there are multiple bottom-most nodes for a horizontal distance from the root, then the latter one in the level traversal is considered. For example, in the below diagram, 3 and 4 are both the bottommost nodes at a horizontal distance of 0, here 4 will be considered.
+
+                      20
+                    /    \
+                  8       22
+                /   \     /   \
+              5      3 4     25
+                     /    \      
+                 10       14
+
+For the above tree, the output should be 5 10 4 14 25.
+
+Examples :
+
+Input:
+       1
+     /   \
+    3     2
+Output: 3 1 2
+Explanation: First case represents a tree with 3 nodes and 2 edges where root is 1, left child of 1 is 3 and right child of 1 is 2.
+
+Thus bottom view of the binary tree will be 3 1 2.
+Input:
+         10
+       /    \
+      20    30
+     /  \
+    40   60
+Output: 40 20 60 30
+Input:
+        1
+       /   
+      2
+Output: 2 1
+Constraints:
+1 <= number of nodes <= 105
+1 <= node->data <= 105
+
+
+class Pair{
+    int ht;
+    Node node;
+    public Pair(int ht, Node node){
+        this.ht = ht;
+        this.node = node;
+    }
+}
+class Solution
+{
+    //Function to return a list containing the bottom view of the given tree.
+    public ArrayList <Integer> bottomView(Node root)
+    {
+        // Code here
+        ArrayList<Integer> arr = new ArrayList<>();
+        Map<Integer,Integer> map = new TreeMap<>();
+        if(root==null) return arr;
+        Queue<Pair> q = new LinkedList<>();
+        q.offer(new Pair(0,root));
+        while(!q.isEmpty()){
+            Pair pair = q.remove();
+            int ht = pair.ht;
+            Node node = pair.node;
+            map.put(ht,node.data);
+            if(node.left!=null) q.offer(new Pair(ht-1,node.left));
+            if(node.right!=null) q.offer(new Pair(ht+1,node.right));
+            
+        }
+        for(Map.Entry<Integer,Integer> entry:map.entrySet()){
+            arr.add(entry.getValue());
+        }
+        return arr;
+    }
+}
