@@ -1,0 +1,53 @@
+Balanced Tree Check
+
+
+Given a binary tree, determine if it is height-balanced. A binary tree is considered height-balanced if the absolute difference in heights of the left and right subtrees is at most 1 for every node in the tree.
+
+Examples:
+
+Input: root[] = [1, 2, N, N, 3]
+      1
+    /
+   2
+    \
+     3 
+Output: false
+Explanation: The height difference between the left and right subtrees at node 1 is 2, which exceeds 1. Hence, the tree is not balanced.
+Input: root[] = [10, 20, 30, 40, 60]
+       10
+     /   \
+    20   30 
+  /   \
+ 40   60
+Output: true
+Explanation: The height difference between the left and right subtrees at all nodes is at most 1. Hence, the tree is balanced.
+Input: root[] = [1, 2, 3, 4, N, N, N, 5]
+       1
+      / \
+     2   3
+    / 
+   4
+  /
+ 5
+Output: false
+Explanation: The height difference between the left and right subtrees at node 2 is 2, which exceeds 1. Hence, the tree is not balanced.
+Constraints:
+1 <=number of nodes <= 105
+1 <= node->data <= 100
+
+
+class Solution {
+    public boolean isBalanced(Node root) {
+        // code here
+        return height(root)!=-1;
+    }
+    static int height(Node root){
+        if(root==null) return 0;
+        int lh = height(root.left);
+        if(lh==-1) return -1;
+        int rh = height(root.right);
+        if(rh==-1) return -1;
+        if(Math.abs(lh-rh)>1) return -1;
+        return Math.max(lh,rh)+1;
+    }
+}
