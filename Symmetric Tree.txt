@@ -1,0 +1,35 @@
+Symmetric Tree
+
+Given a Binary Tree. Check whether it is Symmetric or not, i.e. whether the binary tree is a Mirror image of itself.
+
+Examples:
+
+Input: root=
+   ex-1_1
+Output: true
+Explanation: Tree is mirror image of itself i.e. tree is symmetric.
+Input: root=
+   ex-2_1
+Output: false
+Explanation: Tree is not mirror image of itself i.e. tree is not symmetric.
+Input: root=
+         5
+       /   \
+      10     10
+Output: true
+Explanation: Tree is mirror image of itself i.e. tree is symmetric.
+Constraints:
+0<=number of nodes<=105
+
+class Solution {
+    // return true/false denoting whether the tree is Symmetric or not
+    public static boolean isSymmetric(Node root) {
+        // add your code here;
+        return root == null || symmetric(root.left,root.right);
+    }
+    static boolean symmetric(Node left,Node right){
+        if(left==null || right==null) return left==right;
+        if(left.data!=right.data) return false;
+        return symmetric(left.left,right.right)&&symmetric(left.right,right.left);
+    }
+}
