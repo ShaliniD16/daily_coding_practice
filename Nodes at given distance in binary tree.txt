@@ -1,0 +1,86 @@
+Nodes at given distance in binary tree
+
+Given a binary tree, a target node in the binary tree, and an integer value k, find all the nodes that are at a distance k from the given target node. No parent pointers are available.
+Note:
+
+You have to return the list in sorted order.
+The tree will not contain duplicate values.
+Examples:
+
+Input: root = [1, 2, 3, 4, 5], target = 2, k = 2   
+
+Output: [3]
+Explanation: Nodes at a distance 2 from the given node 2 is 3.
+Input: root = [1, 2, 3, 4, 5, 6, 7], target = 3, k = 1
+
+Output: [1, 6, 7]
+Explanation: Nodes at a distance 1 from the given target node 3 are 1, 6 & 7.
+Constraints:
+1 ≤ number of nodes ≤ 106
+1 ≤  node->data ≤ 109
+1 ≤ target ≤ 109
+1 ≤ k ≤ 20
+
+class Solution {
+    public static ArrayList<Integer> KDistanceNodes(Node root, int target, int k) {
+        // return the sorted list of all nodes at k dist
+        Node targetNode = preorder(root, target);
+        HashMap<Node,Node> parent = new HashMap<>();
+        findParent(root,parent);
+        Queue<Node> queue = new LinkedList<>();
+        HashMap<Node,Boolean> visited = new HashMap<>();
+        int currlevel = 0;
+        queue.offer(targetNode);
+        visited.put(targetNode,true);
+        while(!queue.isEmpty()){
+            if(currlevel==k) break;
+            currlevel++;
+            int size = queue.size();
+            for(int i = 0;i<size;i++){
+                Node curr = queue.poll();
+                if(curr.left!=null && visited.get(curr.left)==null){
+                    queue.offer(curr.left);
+                    visited.put(curr.left,true);
+                }
+                if(curr.right!=null && visited.get(curr.right)==null){
+                    queue.offer(curr.right);
+                    visited.put(curr.right,true);
+                }
+                if(parent.get(curr)!=null && visited.get(parent.get(curr))==null){
+                    queue.offer(parent.get(curr));
+                    visited.put(parent.get(curr),true);
+                }
+            }
+        }
+        ArrayList<Integer> res = new ArrayList();
+        while(!queue.isEmpty()){
+            res.add(queue.poll().data);
+        }
+        Collections.sort(res);
+        return res;
+    }
+    static Node preorder(Node root, int target){
+        if(root==null) return null;
+        if(root.data==target) return root;
+        Node leftResult = preorder(root.left,target);
+        if(leftResult!=null) return leftResult;
+        Node rightResult = preorder(root.right,target);
+        if(rightResult!=null) return rightResult;
+        return null;
+    }
+    static void findParent(Node root,HashMap<Node,Node> parent){
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            Node curr = queue.poll();
+            if(curr.left!=null){
+                queue.offer(curr.left);
+                parent.put(curr.left,curr);
+            }
+            if(curr.right!=null){
+                queue.offer(curr.right);
+                parent.put(curr.right,curr);
+            }
+        }
+    }
+};
