@@ -1,0 +1,47 @@
+Permutations of a String
+
+
+Given a string s, which may contain duplicate characters, your task is to generate and return an array of all unique permutations of the string. You can return your answer in any order.
+
+Examples:
+
+Input: s = "ABC"
+Output: ["ABC", "ACB", "BAC", "BCA", "CAB", "CBA"]
+Explanation: Given string ABC has 6 unique permutations.
+Input: s = "ABSG"
+Output: ["ABGS", "ABSG", "AGBS", "AGSB", "ASBG", "ASGB", "BAGS", "BASG", "BGAS", "BGSA", "BSAG", "BSGA", "GABS", "GASB", "GBAS", "GBSA", "GSAB", "GSBA", "SABG", "SAGB", "SBAG", "SBGA", "SGAB", "SGBA"]
+Explanation: Given string ABSG has 24 unique permutations.
+Input: s = "AAA"
+Output: ["AAA"]
+Explanation: No other unique permutations can be formed as all the characters are same.
+Constraints:
+1 <= s.size() <= 9
+s contains only Uppercase english alphabets
+
+class Solution {
+    public ArrayList<String> findPermutation(String s) {
+        // Code here
+        HashSet<String> result = new HashSet<>();
+        permute(s.toCharArray(),0,result);
+        return new ArrayList<>(result);
+    }
+    static void permute(char[] chars,int index, HashSet<String> result){
+        if(chars.length==index) result.add(new String(chars));
+        HashSet<Character> seen = new HashSet<>();
+        for(int i = index;i<chars.length;i++){
+            if(!seen.contains(chars[i])){
+                seen.add(chars[i]);
+                swap(chars,i,index);
+                permute(chars,index+1,result);
+                swap(chars,i,index);
+            }
+            
+            
+        }
+    }
+    static void swap(char[] chars, int i, int j){
+        char t = chars[i];
+        chars[i] = chars[j];
+        chars[j] = t;
+    }
+}
