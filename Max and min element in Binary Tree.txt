@@ -1,0 +1,46 @@
+Max and min element in Binary Tree
+
+
+Given a Binary Tree, find maximum and minimum elements in it.
+
+Example:
+
+Input: 
+           
+Output: 11 1
+Explanation: The maximum and minimum element in this binary tree is 11 and 1 respectively.
+Input: 
+           6
+        / \
+       5   8
+      /
+     2
+Output: 8 2
+Explanation: The maximum and minimum element in this binary tree is 8 and 2 respectively.
+Constraints:
+1 <= number of nodes <= 105
+1 <= data of a node <= 105
+
+
+class Solution{
+    public static int findMax(Node root){
+        //code here
+        if(root==null) return Integer.MIN_VALUE;
+        int res = root.data;
+        int lres = findMax(root.left);
+        int rres = findMax(root.right);
+        if(lres>res) res = lres;
+        if(rres>res) res = rres;
+        return res;
+    }
+    public static int findMin(Node root){
+        //code here
+        if(root==null) return Integer.MAX_VALUE;
+        int res = root.data;
+        int lres = findMin(root.left);
+        int rres = findMin(root.right);
+        if(lres<res) res = lres;
+        if(rres<res) res = rres;
+        return res;
+    }
+}
