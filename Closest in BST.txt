@@ -1,0 +1,65 @@
+Closest in BST
+
+Given a BST and an integer. Find the least absolute difference between any node value of the BST and the given integer.
+
+Example 1:
+
+Input:
+        10
+      /   \
+     2    11
+   /  \ 
+  1    5
+      /  \
+     3    6
+      \
+       4
+K = 13
+Output: 2
+Explanation: K=13. The node that has value nearest to K is 11. so the answer is 2
+Example 2:
+
+Input:
+      8
+    /   \
+   1     9
+    \     \
+     4    10
+    /
+   3
+K = 9
+Output: 0
+Explanation: K=9. The node that has value nearest to K is 9. so the answer is 0.
+Constraints:
+1 <= Number of nodes <= 105
+1 <= Value stored at nodes(data), K <= 105
+
+
+
+class Solution
+{
+    //Function to find the least absolute difference between any node
+    //value of the BST and the given integer.
+    static int minDiff(Node  root, int K) 
+    { 
+        // Write your code here
+        int[] minDiffData = new int[1];
+        minDiffData[0] = Integer.MAX_VALUE;
+        
+        minDiffUtil(root,K,minDiffData);
+        return minDiffData[0];
+    } 
+    static void minDiffUtil(Node root,int K,int[] minDiffData){
+        if(root==null) return;
+        if(root.data==K) {
+            minDiffData[0] = 0;
+            return;
+        }
+        if(minDiffData[0]>Math.abs(root.data-K)){
+            minDiffData[0] = Math.abs(root.data-K);
+            
+        }
+        if(root.data>K) minDiffUtil(root.left,K,minDiffData);
+        else minDiffUtil(root.right,K,minDiffData);
+    }
+}
