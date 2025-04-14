@@ -1,0 +1,57 @@
+Permutations of a String Backtracking
+
+
+Given a string s, which may contain duplicate characters, your task is to generate and return an array of all unique permutations of the string. You can return your answer in any order.
+
+Examples:
+
+Input: s = "ABC"
+Output: ["ABC", "ACB", "BAC", "BCA", "CAB", "CBA"]
+Explanation: Given string ABC has 6 unique permutations.
+Input: s = "ABSG"
+Output: ["ABGS", "ABSG", "AGBS", "AGSB", "ASBG", "ASGB", "BAGS", "BASG", "BGAS", "BGSA", "BSAG", "BSGA", "GABS", "GASB", "GBAS", "GBSA", "GSAB", "GSBA", "SABG", "SAGB", "SBAG", "SBGA", "SGAB", "SGBA"]
+Explanation: Given string ABSG has 24 unique permutations.
+Input: s = "AAA"
+Output: ["AAA"]
+Explanation: No other unique permutations can be formed as all the characters are same.
+Constraints:
+1 <= s.size() <= 9
+s contains only Uppercase english alphabets
+
+
+
+class Solution {
+    public ArrayList<String> findPermutation(String s) {
+        // Code here
+        ArrayList<String> result = new ArrayList<>();
+        List<Character> ds = new ArrayList<>();
+        boolean[] map = new boolean[s.length()];
+        char[] chars = s.toCharArray();
+        Arrays.sort(chars);
+        
+        recurPermute(result,ds,map,chars);
+        return result;
+    }
+    public void recurPermute(ArrayList<String> result, List<Character> ds, boolean[] map, char[] s){
+        if(ds.size()==s.length){
+            StringBuilder sb = new StringBuilder();
+            for(char ch : ds){
+                sb.append(ch);
+            }
+            result.add(sb.toString());
+            return;
+        }
+        for(int i = 0;i<s.length;i++){
+            if(map[i]) continue;
+            if(i>0 && s[i]==s[i-1] && !map[i-1]) continue;
+            
+            map[i] = true;
+            ds.add(s[i]);
+            recurPermute(result,ds,map,s);
+            ds.remove(ds.size()-1);
+            map[i] = false;
+            
+        }
+    }
+
+}
