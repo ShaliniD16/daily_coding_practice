@@ -1,0 +1,54 @@
+Subsets
+
+
+Given an array arr[] of distinct positive integers, your task is to find all its subsets. The subsets should be returned in lexicographical order.
+
+Examples:
+
+Input: arr = [1, 2, 3]
+Output: [[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]
+Explanation: 
+The subsets of [1, 2, 3] in lexicographical order are:
+[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]
+Input: arr = [1, 2]
+Output: [[], [1], [1, 2], [2]]
+Explanation:
+The subsets of [1, 2] in lexicographical order are:
+[], [1], [1, 2], [2]
+Input: arr = [10]
+Output: [[], [10]]
+Explanation: For the array with a single element [10], the subsets are [ ] and [10].
+Constraints :
+1 ≤ arr.size() ≤ 10
+1 ≤ arr[i] ≤ 10
+
+
+class Solution {
+    public ArrayList<ArrayList<Integer>> subsets(int arr[]) {
+        // code here
+        ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+        ArrayList<Integer> ds = new ArrayList<>();
+        findSubsets(arr,0,ds,res);
+        res.sort((a,b)->{
+            int n = Math.min(a.size(),b.size());
+            for(int i = 0;i<n;i++){
+                if(!a.get(i).equals(b.get(i))){
+                    return a.get(i)-b.get(i);
+                }
+            }
+            return a.size()-b.size();
+        });
+        return res;
+    }
+    public void findSubsets(int[] arr, int ind, ArrayList<Integer> ds,ArrayList<ArrayList<Integer>> res ){
+        if(ind==arr.length){
+            res.add(new ArrayList<>(ds));
+            return;
+        }
+        ds.add(arr[ind]);
+        findSubsets(arr,ind+1,ds,res);
+        ds.remove(ds.size()-1);
+        
+        findSubsets(arr,ind+1,ds,res);
+    }
+}
