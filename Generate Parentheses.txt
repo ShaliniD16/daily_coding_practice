@@ -1,0 +1,56 @@
+Generate Parentheses
+
+
+Given a number n, return all the combinations of balanced parentheses of length n.
+Note: A sequence of parentheses is balanced if every opening bracket has a corresponding closing bracket in the correct order.
+For example, "(())", "()()", and "(()())" are balanced, whereas ")()(", "))((", and "()))" are not.
+
+
+Examples:
+
+Input: n = 6
+Output: ["((()))", "(()())", "(())()", "()(())", "()()()"]
+Explanation: These are the only possible valid balanced parentheses.
+Input: n = 4
+Output: ["(())", "()()"]
+Explanation: These are the only possible valid balanced parentheses.
+Constraints:
+1 ≤ n ≤ 16
+n % 2 = 0
+
+
+class Solution {
+
+    public ArrayList<String> generateParentheses(int n) {
+        // code here
+        ArrayList<Character> str = new ArrayList<>();
+        ArrayList<String> res = new ArrayList<>();
+        int open = 0;
+        int closed = 0;
+        n = n/2;
+        solve(n,open,closed,str, res);
+        return res;
+        
+        
+    }
+    public void solve(int n, int open, int closed, ArrayList<Character> str, ArrayList<String> res){
+        if(n==open && open==closed){
+            String s = "";
+            for(int i = 0;i<str.size();i++){
+                s+=str.get(i);
+            }
+            res.add(s);
+            return;
+        }
+        if(open<n){
+            str.add('(');
+            solve(n, open+1, closed, str, res);
+            str.remove(str.size()-1);
+        }
+        if(open>closed){
+            str.add(')');
+            solve(n, open, closed+1, str, res);
+            str.remove(str.size()-1);
+        }
+    }
+}
